@@ -1,0 +1,79 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Runtime logs
+logs/
+*.out
+*.err
+*.log
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+
+# MLflow local tracking
+mlruns/
+mlflow.db
+
+# Large model artifacts / checkpoints
+models/
+results/checkpoints/
+results/final_model/
+
+# Generated deployment assets
+results/deployment/
+
+# Generated datasets
+data/raw/
+data/processed/
+data/tokenized/
+
+# Local experiment databases
+results/*.db
+
+# Temporary / packaged handoff artifacts
+*.tar
+*.tar.gz
+*.zip
+
+# Temporary rerun artifacts
+*rerun*
+
+# Starter handoff file no longer needed
+README_START_HERE.md
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+
+# Large detailed evaluation artifacts
+results/evaluation/*downstream_qa*.json
+results/evaluation/grounding_factuality_*.json
+results/evaluation/retrieval_bm25.json
+results/evaluation/retrieval_dense_e5_small_v2.json
+results/evaluation/retrieval_hybrid_rrf.json
+results/evaluation/retrieval_conditioned_*.json

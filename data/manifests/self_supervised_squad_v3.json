@@ -1,0 +1,18 @@
+{
+  "source_dataset": "rajpurkar/squad_v2",
+  "seed": 42,
+  "model": "Qwen/Qwen2.5-0.5B",
+  "objective": "causal_language_modeling",
+  "training_method": "full-parameter self-supervised fine-tuning",
+  "v3_source_rows": 30000,
+  "train_unique_contexts": 14639,
+  "validation_qa_rows": 5933,
+  "validation_unique_contexts": 603,
+  "reserved_test_qa_rows": 5940,
+  "reserved_test_unique_contexts": 601,
+  "train_validation_overlap": 0,
+  "train_test_overlap": 0,
+  "validation_test_overlap": 0,
+  "train_sha256": "499629a57d8bb76387f5b76f80187b242805b0de50ca5d9a1baeb0b08d249a3c",
+  "validation_sha256": "b8aad87ab20e5d02b8fe637593883ffc4cfdeee527bd70527a56c536ff71cb0f"
+}

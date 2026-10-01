@@ -1,0 +1,16 @@
+{
+  "source": "rajpurkar/squad_v2",
+  "seed": 42,
+  "documents": 20233,
+  "queries": 5940,
+  "unique_gold_documents": 601,
+  "answerable_queries": 2975,
+  "unanswerable_queries": 2965,
+  "evaluation_metrics": [
+    "Recall@1",
+    "Recall@3",
+    "Recall@5",
+    "Recall@10",
+    "MRR"
+  ]
+}

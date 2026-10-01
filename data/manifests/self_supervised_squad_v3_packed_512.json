@@ -1,0 +1,27 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B",
+  "objective": "causal_language_modeling",
+  "training_method": "full-parameter self-supervised fine-tuning",
+  "block_size": 512,
+  "document_separator": "eos_token",
+  "eos_token": "<|endoftext|>",
+  "eos_token_id": 151643,
+  "train": {
+    "documents": 14639,
+    "total_tokens_including_eos": 2383761,
+    "usable_tokens": 2383360,
+    "remainder_tokens_dropped": 401,
+    "remainder_ratio": 0.0001682215624804668,
+    "blocks": 4655,
+    "block_size": 512
+  },
+  "validation": {
+    "documents": 603,
+    "total_tokens_including_eos": 103130,
+    "usable_tokens": 102912,
+    "remainder_tokens_dropped": 218,
+    "remainder_ratio": 0.0021138369048773393,
+    "blocks": 201,
+    "block_size": 512
+  }
+}

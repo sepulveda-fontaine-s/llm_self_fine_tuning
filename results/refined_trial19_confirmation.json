@@ -1,0 +1,14 @@
+{
+  "candidate": "trial_19_refined",
+  "seed": 123,
+  "optimizer_steps": 291,
+  "learning_rate": 1.5207292892805172e-05,
+  "weight_decay": 0.0407392908424372,
+  "warmup_ratio": 0.031301953382248254,
+  "scheduler": "cosine",
+  "max_grad_norm": 1.9869442371619883,
+  "validation_loss": 2.6721180280049643,
+  "perplexity": 14.470585863981908,
+  "training_time_seconds": 154.43475010502152,
+  "peak_vram_gib": 17.11592388153076
+}

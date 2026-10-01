@@ -1,0 +1,284 @@
+cat > frontend/index.html <<'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Self-Supervised LLM Monitoring Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Production LLM System</p>
+        <h1>Self-Supervised LLM Deployment</h1>
+        <p class="subtitle">
+          Hybrid retrieval, grounded generation and live observability
+        </p>
+      </div>
+
+      <div class="status-panel">
+        <span id="status-dot" class="status-dot"></span>
+        <div>
+          <span class="status-label">Service status</span>
+          <strong id="service-status">Checking...</strong>
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Runtime</p>
+          <h2>Live Observability</h2>
+        </div>
+        <span id="last-updated" class="muted">Waiting for metrics...</span>
+      </div>
+
+      <div class="metrics-grid">
+        <article class="metric-card">
+          <span>Uptime</span>
+          <strong id="uptime">—</strong>
+        </article>
+
+        <article class="metric-card">
+          <span>Total requests</span>
+          <strong id="requests-total">—</strong>
+        </article>
+
+        <article class="metric-card">
+          <span>Error rate</span>
+          <strong id="error-rate">—</strong>
+        </article>
+
+        <article class="metric-card">
+          <span>Requests / min</span>
+          <strong id="rpm">—</strong>
+        </article>
+
+        <article class="metric-card">
+          <span>E2E latency</span>
+          <strong id="e2e-latency">—</strong>
+          <small>P95</small>
+        </article>
+
+        <article class="metric-card">
+          <span>GPU memory</span>
+          <strong id="gpu-memory">—</strong>
+          <small id="gpu-name">—</small>
+        </article>
+
+        <article class="metric-card">
+          <span>GPU utilization</span>
+          <strong id="gpu-util">—</strong>
+        </article>
+
+        <article class="metric-card">
+          <span>Rolling window</span>
+          <strong id="rolling-window">—</strong>
+        </article>
+      </div>
+
+      <div class="latency-grid">
+        <article class="panel">
+          <div class="panel-title">
+            <h3>Latency trace</h3>
+            <span>latest request</span>
+          </div>
+
+          <div class="latency-row">
+            <span>Retrieval</span>
+            <strong id="latency-retrieval">—</strong>
+          </div>
+          <div class="latency-row">
+            <span>Generation</span>
+            <strong id="latency-generation">—</strong>
+          </div>
+          <div class="latency-row">
+            <span>Grounding</span>
+            <strong id="latency-grounding">—</strong>
+          </div>
+          <div class="latency-row">
+            <span>End-to-end</span>
+            <strong id="latency-e2e">—</strong>
+          </div>
+        </article>
+
+        <article class="panel chart-panel">
+          <div class="panel-title">
+            <h3>End-to-end latency history</h3>
+            <span>live polling</span>
+          </div>
+          <canvas id="latency-chart" width="760" height="240"></canvas>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Inference</p>
+          <h2>Grounded Answer</h2>
+        </div>
+      </div>
+
+      <article class="panel inference-panel">
+        <div class="controls">
+          <div class="field grow">
+            <label for="question">Question</label>
+            <input
+              id="question"
+              type="text"
+              value="Who developed the theory of relativity?"
+            />
+          </div>
+
+          <div class="field">
+            <label for="model-select">Model</label>
+            <select id="model-select">
+              <option value="self_supervised">Self-supervised</option>
+              <option value="base">Base</option>
+            </select>
+          </div>
+
+          <button id="ask-button" type="button">Run inference</button>
+        </div>
+
+        <div id="inference-state" class="muted">Ready.</div>
+
+        <div class="answer-grid">
+          <article class="result-block">
+            <span class="result-label">Generated answer</span>
+            <p id="answer-text">—</p>
+          </article>
+
+          <article class="result-block">
+            <span class="result-label">Grounding</span>
+            <div class="grounding-grid">
+              <div>
+                <span>NLI label</span>
+                <strong id="nli-label">—</strong>
+              </div>
+              <div>
+                <span>Entailment</span>
+                <strong id="nli-entailment">—</strong>
+              </div>
+              <div>
+                <span>Contradiction</span>
+                <strong id="nli-contradiction">—</strong>
+              </div>
+              <div>
+                <span>Hallucination proxy</span>
+                <strong id="hallucination-proxy">—</strong>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <article class="result-block evidence-block">
+          <span class="result-label">Retrieved evidence</span>
+          <p id="evidence-text">—</p>
+        </article>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Validated offline evaluation</p>
+          <h2>Benchmark</h2>
+        </div>
+        <span class="muted">5,940 test examples</span>
+      </div>
+
+      <div class="benchmark-grid">
+        <article class="panel">
+          <div class="panel-title">
+            <h3>Hybrid Retrieval</h3>
+            <span>BM25 + E5 + RRF</span>
+          </div>
+
+          <div class="benchmark-row">
+            <span>Recall@1</span>
+            <strong id="recall-1">—</strong>
+          </div>
+          <div class="benchmark-row">
+            <span>Recall@3</span>
+            <strong id="recall-3">—</strong>
+          </div>
+          <div class="benchmark-row">
+            <span>Recall@5</span>
+            <strong id="recall-5">—</strong>
+          </div>
+          <div class="benchmark-row">
+            <span>Recall@10</span>
+            <strong id="recall-10">—</strong>
+          </div>
+          <div class="benchmark-row">
+            <span>MRR@10</span>
+            <strong id="mrr-10">—</strong>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-title">
+            <h3>Base model</h3>
+            <span>retrieval-conditioned</span>
+          </div>
+
+          <div class="benchmark-row">
+            <span>QA F1</span>
+            <strong id="base-f1">—</strong>
+          </div>
+          <div class="benchmark-row">
+            <span>Exact Match</span>
+            <strong id="base-em">—</strong>
+          </div>
+          <div class="benchmark-row">
+            <span>NLI entailment</span>
+            <strong id="base-entailment">—</strong>
+          </div>
+          <div class="benchmark-row">
+            <span>Hallucination proxy</span>
+            <strong id="base-hallucination">—</strong>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-title">
+            <h3>Self-supervised model</h3>
+            <span>retrieval-conditioned</span>
+          </div>
+
+          <div class="benchmark-row">
+            <span>QA F1</span>
+            <strong id="ssl-f1">—</strong>
+          </div>
+          <div class="benchmark-row">
+            <span>Exact Match</span>
+            <strong id="ssl-em">—</strong>
+          </div>
+          <div class="benchmark-row">
+            <span>NLI entailment</span>
+            <strong id="ssl-entailment">—</strong>
+          </div>
+          <div class="benchmark-row">
+            <span>Hallucination proxy</span>
+            <strong id="ssl-hallucination">—</strong>
+          </div>
+        </article>
+      </div>
+
+      <p class="footnote">
+        NLI non-entailment is used as an automatic hallucination proxy,
+        not as factual ground truth. Grounded output does not necessarily
+        imply task-correct output.
+      </p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
+EOF

@@ -1,0 +1,14 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B",
+  "dataset": "data/processed/self_supervised_squad_v3_packed_512",
+  "split": "validation",
+  "blocks": 201,
+  "block_size": 512,
+  "batch_size": 8,
+  "dtype": "bfloat16",
+  "prediction_tokens": 102711,
+  "validation_loss": 2.7491221166961823,
+  "perplexity": 15.628905504790477,
+  "gpu": "NVIDIA A30",
+  "torch_version": "2.11.0+cu128"
+}

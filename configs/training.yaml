@@ -1,0 +1,150 @@
+model:
+  name: Qwen/Qwen2.5-0.5B
+
+data:
+  dataset_path: data/processed/self_supervised_squad_v3_packed_512
+  block_size: 512
+
+training:
+  seed: 42
+  epochs: 3
+
+  per_device_batch_size: 8
+  gradient_accumulation_steps: 2
+
+  max_grad_norm: 1.9869442371619883
+  precision: bf16
+
+  learning_rate: 1.5207292892805172e-05
+  weight_decay: 0.0407392908424372
+  warmup_ratio: 0.031301953382248254
+  scheduler: cosine
+
+tuning:
+  study_name: qwen_self_supervised_full_ft_optuna
+  storage: sqlite:///results/optuna_self_supervised.db
+
+  n_trials: 16
+  sampler_seed: 42
+  startup_trials: 4
+
+  learning_rate_min: 5.0e-6
+  learning_rate_max: 5.0e-5
+
+  weight_decay_min: 0.0
+  weight_decay_max: 0.10
+
+  warmup_ratio_min: 0.0
+  warmup_ratio_max: 0.10
+
+  schedulers:
+    - linear
+    - cosine
+
+  max_optimizer_steps: 180
+  evaluation_interval: 45
+  pruning_start_step: 90
+
+confirmation:
+  seed: 123
+  optimizer_steps: 291
+
+  candidates:
+    - name: trial_12
+      learning_rate: 1.3073471890395049e-05
+      weight_decay: 0.08130393887536734
+      warmup_ratio: 0.07172442936149423
+      scheduler: linear
+
+    - name: trial_11
+      learning_rate: 1.2579192421999839e-05
+      weight_decay: 0.07157191208928396
+      warmup_ratio: 0.07786868820052714
+      scheduler: linear
+
+    - name: trial_0
+      learning_rate: 1.1844319751820392e-05
+      weight_decay: 0.09507143064099162
+      warmup_ratio: 0.0731993941811405
+      scheduler: linear
+
+    - name: trial_4
+      learning_rate: 2.045610287221892e-05
+      weight_decay: 0.013949386065204183
+      warmup_ratio: 0.029214464853521818
+      scheduler: cosine
+
+    - name: trial_6
+      learning_rate: 2.0254188906648377e-05
+      weight_decay: 0.017052412368729154
+      warmup_ratio: 0.006505159298527952
+      scheduler: cosine
+
+checkpointing:
+  directory: results/checkpoints/self_supervised_v3_refined
+
+tracking:
+  uri: ./mlruns
+  experiment_name: qwen_self_supervised_full_fine_tuning_v3_refined
+
+selection_initial:
+  source: optuna_plus_independent_confirmation
+  optuna_trial: 12
+  confirmation_seed: 123
+  confirmation_validation_loss: 2.672967256
+  confirmation_perplexity: 14.482880
+
+generation:
+  do_sample: false
+  repetition_penalty: 1.0
+  max_new_tokens: 64
+
+tuning_refined:
+  study_name: qwen_self_supervised_full_ft_optuna_refined
+  storage: sqlite:///results/optuna_self_supervised_refined.db
+
+  n_trials: 24
+  sampler_seed: 314
+  startup_trials: 6
+
+  learning_rate_min: 8.0e-6
+  learning_rate_max: 2.2e-5
+
+  weight_decay_min: 0.03
+  weight_decay_max: 0.12
+
+  warmup_ratio_min: 0.03
+  warmup_ratio_max: 0.10
+
+  max_grad_norm_min: 0.5
+  max_grad_norm_max: 2.0
+
+  schedulers:
+    - linear
+    - cosine
+
+  max_optimizer_steps: 291
+  evaluation_interval: 97
+  pruning_start_step: 194
+
+confirmation_refined:
+  seed: 123
+  optimizer_steps: 291
+
+  candidate:
+    name: trial_19_refined
+    learning_rate: 1.5207292892805172e-05
+    weight_decay: 0.0407392908424372
+    warmup_ratio: 0.031301953382248254
+    scheduler: cosine
+    max_grad_norm: 1.9869442371619883
+
+selection_final:
+  source: refined_optuna_plus_independent_confirmation
+  optuna_study: qwen_self_supervised_full_ft_optuna_refined
+  optuna_trial: 19
+  optuna_validation_loss: 2.6718928469947323
+  confirmation_seed: 123
+  confirmation_validation_loss: 2.6721180280049643
+  confirmation_perplexity: 14.470585863981908
+  final_training_seed: 42

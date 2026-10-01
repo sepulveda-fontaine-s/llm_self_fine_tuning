@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-self-supervised-fine-tuning"
+version = "0.1.0"
+description = "Full-parameter self-supervised fine-tuning of Qwen2.5-0.5B with reproducible training and evaluation."
+requires-python = ">=3.11,<3.13"
+
+dependencies = [
+    "torch",
+    "transformers",
+    "datasets",
+    "accelerate",
+    "evaluate",
+    "mlflow",
+    "PyYAML",
+    "optuna",
+    "pydantic",
+    "fastapi==0.141.1",
+    "uvicorn==0.53.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
