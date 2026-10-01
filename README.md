@@ -1,8 +1,8 @@
-# LLM Self-Supervised Fine-Tuning - Qwen2.5 Continued Pretraining
+# LLM Self-Supervised Fine-Tuning - Qwen2.5 
 
-Full-parameter self-supervised fine-tuning of `Qwen/Qwen2.5-0.5B` through continued causal-language-model training on SQuAD v2 context text, followed by controlled evaluation of language-model adaptation, downstream question answering, retrieval, grounding, factuality proxies, and production-oriented serving.
 
 This repository is a hands-on portfolio project designed to demonstrate an inspectable, production-oriented ML/LLM engineering workflow. It is not presented as long-term commercial production experience.
+There is a technical report as a follow-up with images, in this repository.
 
 ## 1. Technical scope
 
